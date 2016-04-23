@@ -1,0 +1,86 @@
+* {
+	margin:0px;
+	padding:0px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+
+body {
+	font-size:10px;
+	font-family:sans-serif;
+	background-color: #F7F7F7;
+	color:#555;
+}
+
+header h1 {
+	text-align:center;
+	padding:30px;
+}
+
+header h1 a {
+	color:inherit;
+	text-decoration:none;
+	font-size:1.5em;
+}
+
+header h1 a:hover {
+	color:#5E97D6;
+}
+
+.cntr {
+    padding: 7px 14px;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    box-shadow: 0px 1px 2px 0px #AFAFAF;
+    -moz-box-shadow: 0px 1px 2px 0px #AFAFAF;
+    -webkit-box-shadow: 0px 1px 2px 0px #AFAFAF;
+}
+
+main #conversation {
+    overflow: scroll;
+	margin-bottom:10px;
+    background-color:#fff;
+    height:400px;
+}
+
+main {
+    margin:0px auto;
+    width:400px;
+}
+
+main #conversation .message {
+	background-color: #f1f1f1;
+    padding: 7px 10px;
+    margin-bottom: 8px;
+    font-size: 1.3em;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+main #conversation .message.logout {
+    background-color:#E8BABA;
+}
+
+main #conversation .message.login {
+    background-color:#C0DAB7;
+}
+
+main input[type="text"] {
+	width: 100%;
+	border:none;
+    font-size: 1.3em;
+    outline:none;
+}
+
+footer {
+    text-align:center;
+    margin-top:10px;
+}
+
+footer #count {
+    font-size: 2.3em;
+    font-weight: bold;
+}
