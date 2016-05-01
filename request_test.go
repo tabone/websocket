@@ -83,7 +83,7 @@ func TestUpgradeResponseWhenInvalidWSVersion(t *testing.T) {
 	}
 
 	if w.Header().Get("Sec-WebSocket-Version") != wsVersion {
-		t.Errorf(`expected "Sec-WebSocket-Version" HTTP Header field value to be %d`, wsVersion)
+		t.Errorf(`expected "Sec-WebSocket-Version" HTTP Header field value to be %s`, wsVersion)
 	}
 }
 

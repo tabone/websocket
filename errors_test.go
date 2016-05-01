@@ -26,7 +26,7 @@ func TestCloseErrorToBytes(t *testing.T) {
 		}
 
 		if len(b) != len(c.b) {
-			t.Errorf(`test case %d: unexpected slice of bytes`)
+			t.Errorf(`test case %d: unexpected slice of bytes`, i)
 		}
 
 		same := true
