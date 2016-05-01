@@ -144,7 +144,7 @@ Read:
 		}
 
 		if err != nil {
-			// If an error occured due to something which doesn't conform with
+			// If an error occurred due to something which doesn't conform with
 			// the websocket rfc, use the error itself as a reason.
 			if c, k := err.(*CloseError); k {
 				s.CloseWithError(c)

@@ -268,7 +268,7 @@ func TestReadPayload(t *testing.T) {
 	}
 
 	for i, c := range testCases {
-		// Data Frame Recieved
+		// Data Frame Received
 		p := []byte{120, 15, 17}
 		b := newBuffer(p)
 
