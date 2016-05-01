@@ -102,7 +102,7 @@ func (d *Dialer) Dial(u string) (*Socket, *http.Response, error) {
 
 // createOpeningHandshakeRequest is used to return a valid websocket opening
 // handshake client request.
-// 
+//
 // Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func (d *Dialer) createRequest(l *url.URL) *http.Request {
 	// Initialize header if not already initialized.

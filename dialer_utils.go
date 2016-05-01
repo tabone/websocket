@@ -156,7 +156,7 @@ func parseURL(u string) (*url.URL, error) {
 // parseURLScheme is used to parse the Scheme portion of a URL string. If the
 // scheme provided is not a valid websocket scheme an error is returned. If no
 // scheme is given it will be defaulted to "ws".
-// 
+//
 // Ref Spec: https://tools.ietf.org/html/rfc6455#section-3
 func parseURLScheme(u *string) error {
 	// Regex to retrieve Scheme portion of a URL string.
