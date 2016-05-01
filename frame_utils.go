@@ -7,7 +7,7 @@ package websocket
 	From spec: https://tools.ietf.org/html/rfc6455#section-5.3
 */
 func mask(p, k []byte) {
-	for i, _ := range p {
+	for i := range p {
 		p[i] ^= k[i%4]
 	}
 }

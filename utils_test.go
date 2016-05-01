@@ -22,7 +22,7 @@ type payloadMock struct {
 func (m *payloadMock) Read(p []byte) (int, error) {
 	n := 0
 
-	for i, _ := range m.p {
+	for i := range m.p {
 		if i == len(p) {
 			break
 		}
@@ -70,7 +70,7 @@ func TestReadFromBufferMultiRead(t *testing.T) {
 	// GO Ref: https://golang.org/src/bufio/bufio.go#L18
 	p := make([]byte, 4100)
 
-	for i, _ := range p {
+	for i := range p {
 		rand.Seed(int64(i))
 		p[i] = byte(rand.Intn(255))
 	}
@@ -100,8 +100,8 @@ func TestStringExists(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{k: "one", v: 0},
-		testCase{k: "four", v: -1},
+		{k: "one", v: 0},
+		{k: "four", v: -1},
 	}
 
 	for i, c := range testCases {
@@ -145,8 +145,8 @@ func TestRandomByteSlice(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{l: 2},
-		testCase{l: 6},
+		{l: 2},
+		{l: 6},
 	}
 
 	for i, c := range testCases {
@@ -164,9 +164,9 @@ func TestCloseErrorExist(t *testing.T) {
 
 	testCases := []testCase{
 		// Should return false when opcode is invalid
-		testCase{e: 15, v: false},
+		{e: 15, v: false},
 		// Should return true when opcode is valid.
-		testCase{e: CloseNormalClosure, v: true},
+		{e: CloseNormalClosure, v: true},
 	}
 
 	for i, c := range testCases {

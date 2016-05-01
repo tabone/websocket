@@ -10,9 +10,9 @@ func TestOpcodeExist(t *testing.T) {
 
 	testCases := []testCase{
 		// Should return false when opcode is invalid
-		testCase{o: 15, v: false},
+		{o: 15, v: false},
 		// Should return true when opcode is valid.
-		testCase{o: OpcodeText, v: true},
+		{o: OpcodeText, v: true},
 	}
 
 	for i, c := range testCases {
@@ -29,10 +29,10 @@ func TestValidateKey(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{k: []byte{1, 2, 3, 4}, r: true},
-		testCase{k: []byte{}, r: true},
-		testCase{k: []byte{1, 2, 3, 4, 5}, r: false},
-		testCase{k: []byte{1, 2, 3}, r: false},
+		{k: []byte{1, 2, 3, 4}, r: true},
+		{k: []byte{}, r: true},
+		{k: []byte{1, 2, 3, 4, 5}, r: false},
+		{k: []byte{1, 2, 3}, r: false},
 	}
 
 	for i, c := range testCases {
@@ -49,7 +49,7 @@ func TestValidatePayload(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{l: 125, r: true},
+		{l: 125, r: true},
 		// testCase{l: 9223372036854775807, r: true},
 		// testCase{l: 9223372036854775808, r: false},
 	}

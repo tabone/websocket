@@ -12,8 +12,8 @@ func TestCloseErrorToBytes(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{c: 1001, r: "normal closure", b: []byte{3, 233, 110, 111, 114, 109, 97, 108, 32, 99, 108, 111, 115, 117, 114, 101}},
-		testCase{c: 1001, r: "", b: []byte{3, 233}},
+		{c: 1001, r: "normal closure", b: []byte{3, 233, 110, 111, 114, 109, 97, 108, 32, 99, 108, 111, 115, 117, 114, 101}},
+		{c: 1001, r: "", b: []byte{3, 233}},
 	}
 
 	for i, c := range testCases {
@@ -74,8 +74,8 @@ func TestNewCloseError(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{c: 1001, r: "normal closure", b: []byte{3, 233, 110, 111, 114, 109, 97, 108, 32, 99, 108, 111, 115, 117, 114, 101}},
-		testCase{c: 1001, r: "", b: []byte{3, 233}},
+		{c: 1001, r: "normal closure", b: []byte{3, 233, 110, 111, 114, 109, 97, 108, 32, 99, 108, 111, 115, 117, 114, 101}},
+		{c: 1001, r: "", b: []byte{3, 233}},
 	}
 
 	for i, c := range testCases {
@@ -101,8 +101,8 @@ func TestNewCloseErrorError(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{p: make([]byte, 0)},
-		testCase{p: []byte{3, 133}},
+		{p: make([]byte, 0)},
+		{p: []byte{3, 133}},
 	}
 
 	for i, c := range testCases {

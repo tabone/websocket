@@ -205,9 +205,9 @@ func TestUpgradeWithSubProtocols(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{p: "one, two, three", v: true},
-		testCase{p: "two, three", v: false},
-		testCase{p: "", v: false},
+		{p: "one, two, three", v: true},
+		{p: "two, three", v: false},
+		{p: "", v: false},
 	}
 
 	for i, c := range testCases {

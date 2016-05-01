@@ -14,9 +14,9 @@ func TestParseURLScheme(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{u: "ws://localhost:8080", f: "ws://localhost:8080"},
-		testCase{u: "wss://localhost:8080", f: "wss://localhost:8080"},
-		testCase{u: "localhost:8080", f: "ws://localhost:8080"},
+		{u: "ws://localhost:8080", f: "ws://localhost:8080"},
+		{u: "wss://localhost:8080", f: "wss://localhost:8080"},
+		{u: "localhost:8080", f: "ws://localhost:8080"},
 	}
 
 	for i, c := range testCases {
@@ -47,10 +47,10 @@ func TestParseURLHost(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{u: &url.URL{Scheme: "ws", Host: "localhost:80"}, h: "localhost:80"},
-		testCase{u: &url.URL{Scheme: "wss", Host: "localhost:80"}, h: "localhost:80"},
-		testCase{u: &url.URL{Scheme: "ws", Host: "localhost"}, h: "localhost:22"},
-		testCase{u: &url.URL{Scheme: "wss", Host: "localhost"}, h: "localhost:443"},
+		{u: &url.URL{Scheme: "ws", Host: "localhost:80"}, h: "localhost:80"},
+		{u: &url.URL{Scheme: "wss", Host: "localhost:80"}, h: "localhost:80"},
+		{u: &url.URL{Scheme: "ws", Host: "localhost"}, h: "localhost:22"},
+		{u: &url.URL{Scheme: "wss", Host: "localhost"}, h: "localhost:443"},
 	}
 
 	for i, c := range testCases {
@@ -95,8 +95,8 @@ func TestValidateResponseStatus(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{s: 101, e: false},
-		testCase{s: 200, e: true},
+		{s: 101, e: false},
+		{s: 200, e: true},
 	}
 
 	for i, c := range testCases {
@@ -123,9 +123,9 @@ func TestValidateResponseUpgradeHeader(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{v: "websocket", e: false},
-		testCase{v: "WebSocket", e: false},
-		testCase{v: "wrong", e: true},
+		{v: "websocket", e: false},
+		{v: "WebSocket", e: false},
+		{v: "wrong", e: true},
 	}
 
 	for i, c := range testCases {
@@ -153,9 +153,9 @@ func TestValidateResponseConnectionHeader(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{v: "upgrade", e: false},
-		testCase{v: "UpgrADE", e: false},
-		testCase{v: "wrong", e: true},
+		{v: "upgrade", e: false},
+		{v: "UpgrADE", e: false},
+		{v: "wrong", e: true},
 	}
 
 	for i, c := range testCases {
@@ -184,9 +184,9 @@ func TestValidateResponseSecWebsocketProtocol(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{c: "client, v1", s: "", e: false},
-		testCase{c: "client, v1", s: "v1", e: false},
-		testCase{c: "client, v1", s: "v2", e: true},
+		{c: "client, v1", s: "", e: false},
+		{c: "client, v1", s: "v1", e: false},
+		{c: "client, v1", s: "v2", e: true},
 	}
 
 	for i, c := range testCases {

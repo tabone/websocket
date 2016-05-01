@@ -17,13 +17,13 @@ func TestValidateRequestVersion(t *testing.T) {
 
 	testCases := []testCase{
 		// HTTP v1.1 should be valid.
-		testCase{a: 1, i: 1, r: true},
+		{a: 1, i: 1, r: true},
 		// HTTP v2.1 should be valid.
-		testCase{a: 2, i: 1, r: true},
+		{a: 2, i: 1, r: true},
 		// HTTP v1.0 should be not valid.
-		testCase{a: 1, i: 0, r: false},
+		{a: 1, i: 0, r: false},
 		// HTTP v0.1 should be not valid.
-		testCase{a: 0, i: 1, r: false},
+		{a: 0, i: 1, r: false},
 	}
 
 	for i, c := range testCases {
@@ -53,9 +53,9 @@ func TestValidateRequestMethod(t *testing.T) {
 
 	testCases := []testCase{
 		// HTTP GET should be valid.
-		testCase{m: "GET", r: true},
+		{m: "GET", r: true},
 		// HTTP POST should be not valid.
-		testCase{m: "POST", r: false},
+		{m: "POST", r: false},
 	}
 
 	for i, c := range testCases {
@@ -84,11 +84,11 @@ func TestValidateRequestUpgradeHeader(t *testing.T) {
 
 	testCases := []testCase{
 		// When value is "websocket" should be valid.
-		testCase{v: "websocket", r: true},
+		{v: "websocket", r: true},
 		// When value is "webSocket" should be valid.
-		testCase{v: "webSocket", r: true},
+		{v: "webSocket", r: true},
 		// When value is not "websocket" should not be valid.
-		testCase{v: "ValueOtherThanWebsocket", r: false},
+		{v: "ValueOtherThanWebsocket", r: false},
 	}
 
 	for i, c := range testCases {
@@ -117,11 +117,11 @@ func TestValidateRequestConnectionHeader(t *testing.T) {
 
 	testCases := []testCase{
 		// When value is "upgrade" should be valid.
-		testCase{v: "upgrade", r: true},
+		{v: "upgrade", r: true},
 		// When value is "Upgrade" should be valid.
-		testCase{v: "Upgrade", r: true},
+		{v: "Upgrade", r: true},
 		// When value is not "upgrade" should not be valid.
-		testCase{v: "ValueOtherThanUpgrade", r: false},
+		{v: "ValueOtherThanUpgrade", r: false},
 	}
 
 	for i, c := range testCases {
@@ -150,11 +150,11 @@ func TestValidateRequestSecWebsocketKeyHeader(t *testing.T) {
 
 	testCases := []testCase{
 		// Valid key.
-		testCase{v: "FlBPpXKmN36AUZxV0tYHYw==", r: true},
+		{v: "FlBPpXKmN36AUZxV0tYHYw==", r: true},
 		// Invalid decoded length.
-		testCase{v: "InvalidKey==", r: false},
+		{v: "InvalidKey==", r: false},
 		// Invalid encoded data.
-		testCase{v: "InvalidKeyError", r: false},
+		{v: "InvalidKeyError", r: false},
 	}
 
 	for i, c := range testCases {
@@ -183,10 +183,10 @@ func TestValidateWSVersionHeader(t *testing.T) {
 
 	testCases := []testCase{
 		// Valid when value is the same as the version of the ws supported.
-		testCase{v: wsVersion, r: true},
+		{v: wsVersion, r: true},
 		// Not valid when value is not the same as the version of the ws
 		// supported.
-		testCase{v: "14", r: false},
+		{v: "14", r: false},
 	}
 
 	for i, c := range testCases {
@@ -216,12 +216,12 @@ func TestCheckOrigin(t *testing.T) {
 
 	testCases := []testCase{
 		// Valid when origin is omitted (non-browser client).
-		testCase{v: "", r: true},
+		{v: "", r: true},
 		// Valid when same origin.
-		testCase{v: r.Host, r: true},
-		testCase{v: "example.com:8080", r: true},
-		testCase{v: "http://example.com:8080", r: true},
-		testCase{v: "https://example.com:8080", r: true},
+		{v: r.Host, r: true},
+		{v: "example.com:8080", r: true},
+		{v: "http://example.com:8080", r: true},
+		{v: "https://example.com:8080", r: true},
 	}
 
 	for i, c := range testCases {

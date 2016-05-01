@@ -43,10 +43,10 @@ func TestDialerCreateRequestHostHeader(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		testCase{u: &url.URL{Scheme: "ws", Host: "localhost:22"}, v: "localhost"},
-		testCase{u: &url.URL{Scheme: "wss", Host: "localhost:443"}, v: "localhost"},
-		testCase{u: &url.URL{Scheme: "ws", Host: "localhost:80"}, v: "localhost:80"},
-		testCase{u: &url.URL{Scheme: "wss", Host: "localhost:80"}, v: "localhost:80"},
+		{u: &url.URL{Scheme: "ws", Host: "localhost:22"}, v: "localhost"},
+		{u: &url.URL{Scheme: "wss", Host: "localhost:443"}, v: "localhost"},
+		{u: &url.URL{Scheme: "ws", Host: "localhost:80"}, v: "localhost:80"},
+		{u: &url.URL{Scheme: "wss", Host: "localhost:80"}, v: "localhost:80"},
 	}
 
 	for i, c := range testCases {
