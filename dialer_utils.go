@@ -9,13 +9,11 @@ import (
 	"strings"
 )
 
-/*
-	validateResponse is used to determine whether the servers handshake request
-	conforms with the WebSocket spec. When it doesn't the client fails the
-	websocket connection.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// validateResponse is used to determine whether the servers handshake request
+// conforms with the WebSocket spec. When it doesn't the client fails the
+// websocket connection.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func validateResponse(r *http.Response) *OpenError {
 	validations := []func(*http.Response) *OpenError{
 		validateResponseStatus,
@@ -33,13 +31,11 @@ func validateResponse(r *http.Response) *OpenError {
 	return nil
 }
 
-/*
-	validateResponseStatus verifies that status code of the server's opening
-	handshake response is '101'. If it is not, it means that the handshake has
-	been rejected and thus the endpoints are still communicating using http.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// validateResponseStatus verifies that status code of the server's opening
+// handshake response is '101'. If it is not, it means that the handshake has
+// been rejected and thus the endpoints are still communicating using http.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func validateResponseStatus(r *http.Response) *OpenError {
 	if r.StatusCode != 101 {
 		return &OpenError{
@@ -49,12 +45,10 @@ func validateResponseStatus(r *http.Response) *OpenError {
 	return nil
 }
 
-/*
-	validateResponseUpgradeHeader verifies that the Upgrade HTTP Header value
-	in the servers's opening handshake response is "websocket".
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// validateResponseUpgradeHeader verifies that the Upgrade HTTP Header value
+// in the servers's opening handshake response is "websocket".
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func validateResponseUpgradeHeader(r *http.Response) *OpenError {
 	if strings.ToLower(r.Header.Get("Upgrade")) != "websocket" {
 		return &OpenError{
@@ -64,12 +58,10 @@ func validateResponseUpgradeHeader(r *http.Response) *OpenError {
 	return nil
 }
 
-/*
-	validateResponseConnectionHeader verifies that the Connection HTTP Header
-	value in the servers's opening handshake response is "upgrade".
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// validateResponseConnectionHeader verifies that the Connection HTTP Header
+// value in the servers's opening handshake response is "upgrade".
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func validateResponseConnectionHeader(r *http.Response) *OpenError {
 	if strings.ToLower(r.Header.Get("Connection")) != "upgrade" {
 		return &OpenError{
@@ -79,15 +71,13 @@ func validateResponseConnectionHeader(r *http.Response) *OpenError {
 	return nil
 }
 
-/*
-	validateResponseSecWebsocketAcceptHeader verifies that the
-	Sec-WebSocket-Accept HTTP Header value in the server's opening handshake
-	response is the base64-encoded SHA-1 of the concatenation of the
-	Sec-WebSocket-Key value (sent with the opening handshake request) (as a
-	string, not base64-decoded) with the websocket accept key.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// validateResponseSecWebsocketAcceptHeader verifies that the
+// Sec-WebSocket-Accept HTTP Header value in the server's opening handshake
+// response is the base64-encoded SHA-1 of the concatenation of the
+// Sec-WebSocket-Key value (sent with the opening handshake request) (as a
+// string, not base64-decoded) with the websocket accept key.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func validateResponseSecWebsocketAcceptHeader(r *http.Response) *OpenError {
 	if r.Header.Get("Sec-WebSocket-Accept") != makeAcceptKey(r.Request.Header.Get("Sec-Websocket-Key")) {
 		return &OpenError{
@@ -97,13 +87,11 @@ func validateResponseSecWebsocketAcceptHeader(r *http.Response) *OpenError {
 	return nil
 }
 
-/*
-	validateResponseSecWebsocketProtocol verifies that the sub protocol the
-	server has agreed to use (Sec-WebSocket-Protocol Header) was in the list the
-	client has sent in the opening handshake request.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// validateResponseSecWebsocketProtocol verifies that the sub protocol the
+// server has agreed to use (Sec-WebSocket-Protocol Header) was in the list the
+// client has sent in the opening handshake request.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func validateResponseSecWebsocketProtocol(r *http.Response) *OpenError {
 	// Sub protocols sent by the client.
 	c := headerToSlice(r.Request.Header.Get("Sec-WebSocket-Protocol"))
@@ -131,24 +119,20 @@ func validateResponseSecWebsocketProtocol(r *http.Response) *OpenError {
 	}
 }
 
-/*
-	makeChallengeKey is used to generate the key to be sent with the client's
-	opening handshake using the Sec-Websocket-Key header field.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// makeChallengeKey is used to generate the key to be sent with the client's
+// opening handshake using the Sec-Websocket-Key header field.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func makeChallengeKey() string {
 	// return Base64 encode version of the byte generated.
 	return base64.StdEncoding.EncodeToString(randomByteSlice(4))
 }
 
-/*
-	parseURL is used to parse the URL string provided and verifies that it
-	conforms with the websocket spec. If it does it will create and return a URL
-	instance representing the URL string provided.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-3
-*/
+// parseURL is used to parse the URL string provided and verifies that it
+// conforms with the websocket spec. If it does it will create and return a URL
+// instance representing the URL string provided.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-3
 func parseURL(u string) (*url.URL, error) {
 	// Parse scheme.
 	if err := parseURLScheme(&u); err != nil {
@@ -169,12 +153,11 @@ func parseURL(u string) (*url.URL, error) {
 	return l, nil
 }
 
-/*
-	parseURLScheme is used to parse the Scheme portion of a URL string. If the
-	scheme provided is not a valid websocket scheme an error is returned. If no
-	scheme is given it will be defaulted to "ws".
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-3
-*/
+// parseURLScheme is used to parse the Scheme portion of a URL string. If the
+// scheme provided is not a valid websocket scheme an error is returned. If no
+// scheme is given it will be defaulted to "ws".
+// 
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-3
 func parseURLScheme(u *string) error {
 	// Regex to retrieve Scheme portion of a URL string.
 	re := regexp.MustCompile("^([a-zA-Z]+)://")
@@ -195,14 +178,12 @@ func parseURLScheme(u *string) error {
 	return nil
 }
 
-/*
-	parseURLHost is used to parse the Host portion of a URL instance to
-	determine whether it has a port or not. When no port is found this method
-	will assign a port based on the URL instance scheme (ws = 22, wss = 443). If
-	the scheme is not a valid scheme for websocket an error is returned.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-3
-*/
+// parseURLHost is used to parse the Host portion of a URL instance to
+// determine whether it has a port or not. When no port is found this method
+// will assign a port based on the URL instance scheme (ws = 22, wss = 443). If
+// the scheme is not a valid scheme for websocket an error is returned.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-3
 func parseURLHost(u *url.URL) error {
 	// If scheme is invalid throw an error
 	if !schemeValid(u.Scheme) {
@@ -235,10 +216,8 @@ func parseURLHost(u *url.URL) error {
 	return nil
 }
 
-/*
-	schemeValid is used to determine whether the scheme provided is a valid
-	scheme for the websocket protocol.
-*/
+// schemeValid is used to determine whether the scheme provided is a valid
+// scheme for the websocket protocol.
 func schemeValid(s string) bool {
 	return s == "ws" || s == "wss"
 }

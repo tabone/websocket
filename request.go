@@ -5,15 +5,11 @@ import (
 	"sync"
 )
 
-/*
-	wsVersion is the websocket version this library supports.
-*/
+// wsVersion is the websocket version this library supports.
 const wsVersion = "13"
 
-/*
-	Request represents the HTTP Request that will be upgraded to the WebSocket
-	protocol once it is validated.
-*/
+// Request represents the HTTP Request that will be upgraded to the WebSocket
+// protocol once it is validated.
 type Request struct {
 	/*
 		request is the http request to be upgraded.
@@ -39,10 +35,8 @@ type Request struct {
 	SubProtocol string
 }
 
-/*
-	Upgrade is used to upgrade the HTTP connection to use the WS protocol once
-	the client request is validated.
-*/
+// Upgrade is used to upgrade the HTTP connection to use the WS protocol once
+// the client request is validated.
 func (q *Request) Upgrade(w http.ResponseWriter, r *http.Request) (*Socket, error) {
 	// Store a reference to the HTTP Request.
 	q.request = r
@@ -128,10 +122,8 @@ func (q *Request) upgrade(w http.ResponseWriter) (*Socket, error) {
 	}, nil
 }
 
-/*
-	handleOrigin is used to invoke either the CheckOrigin method provided by the
-	user or the default method (if the user doesn't provide one).
-*/
+// handleOrigin is used to invoke either the CheckOrigin method provided by the
+// user or the default method (if the user doesn't provide one).
 func (q *Request) handleOrigin() *OpenError {
 	fn := q.CheckOrigin
 
@@ -146,22 +138,18 @@ func (q *Request) handleOrigin() *OpenError {
 	return nil
 }
 
-/*
-	ClientSubProtocols returns the list of Sub Protocols the client can interact
-	with.
-
-	From spec: https://tools.ietf.org/html/rfc6455#section-4.2.1
-*/
+// ClientSubProtocols returns the list of Sub Protocols the client can interact
+// with.
+//
+// From spec: https://tools.ietf.org/html/rfc6455#section-4.2.1
 func (q *Request) ClientSubProtocols() []string {
 	return headerToSlice(q.request.Header.Get("Sec-WebSocket-Protocol"))
 }
 
-/*
-	ClientExtensions returns the list of Extensions the client can interact
-	with.
-
-	From spec: https://tools.ietf.org/html/rfc6455#section-4.2.1
-*/
+// ClientExtensions returns the list of Extensions the client can interact
+// with.
+//
+// From spec: https://tools.ietf.org/html/rfc6455#section-4.2.1
 func (q *Request) ClientExtensions() []string {
 	return headerToSlice(q.request.Header.Get("Sec-WebSocket-Extensions"))
 }

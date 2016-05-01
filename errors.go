@@ -6,36 +6,30 @@ import (
 	"fmt"
 )
 
-/*
-	CloseError represents errors related to the websocket closing handshake.
-*/
+// CloseError represents errors related to the websocket closing handshake.
 type CloseError struct {
 	Code   int
 	Reason string
 }
 
-/*
-	Error implements the built in error interface.
-*/
+// Error implements the built in error interface.
 func (c *CloseError) Error() string {
 	return fmt.Sprintf("Close Error: %d %s", c.Code, c.Reason)
 }
 
-/*
-	ToBytes returns the representation of a CloseError instance in a []bytes
-	that conforms with the way the websocket rfc expects the payload data of
-	CLOSE FRAMES to be.
-
-	While generating the []bytes, if the CloseError instance has an invalid
-	error code, it will instead create the representation of a 'No Status
-	Recieved Error' (i.e. 1005).
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.1
-*/
+// ToBytes returns the representation of a CloseError instance in a []bytes
+// that conforms with the way the websocket rfc expects the payload data of
+// CLOSE FRAMES to be.
+//
+// While generating the []bytes, if the CloseError instance has an invalid
+// error code, it will instead create the representation of a 'No Status
+// Received Error' (i.e. 1005).
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.1
 func (c *CloseError) ToBytes() ([]byte, error) {
 	// Validate Error Code
 	if !closeErrorExist(c.Code) {
-		// If it is not valid, return bytes for No Status Recieved error.
+		// If it is not valid, return bytes for No Status Received error.
 		n := &CloseError{
 			Code:   CloseNoStatusReceived,
 			Reason: "no status recieved",
@@ -47,27 +41,23 @@ func (c *CloseError) ToBytes() ([]byte, error) {
 	return append(c.toBytesCode(), []byte(c.Reason)...), nil
 }
 
-/*
-	toBytesCode is used to get a representation of the CloseError instance
-	status code in []bytes.
-*/
+// toBytesCode is used to get a representation of the CloseError instance
+// status code in []bytes.
 func (c *CloseError) toBytesCode() []byte {
 	b := make([]byte, 2)
 	binary.BigEndian.PutUint16(b, uint16(c.Code))
 	return b
 }
 
-/*
-	NewCloseError is used to create a new CloseError instance by parsing 'b'. In
-	order for this to happen the []bytes needs to conform with the way the
-	websocket rfc expects the payload data of CLOSE FRAMES to be.
-
-	While parsing if the error code (i.e. first two bytes) is invalid, it will
-	default the CloseError instance returned to represent a 'No Status Recieved
-	Error' (i.e. 1005).
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.1
-*/
+// NewCloseError is used to create a new CloseError instance by parsing 'b'. In
+// order for this to happen the []bytes needs to conform with the way the
+// websocket rfc expects the payload data of CLOSE FRAMES to be.
+//
+// While parsing if the error code (i.e. first two bytes) is invalid, it will
+// default the CloseError instance returned to represent a 'No Status Received
+// Error' (i.e. 1005).
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.1
 func NewCloseError(b []byte) (*CloseError, error) {
 	var c int
 
@@ -89,16 +79,12 @@ func NewCloseError(b []byte) (*CloseError, error) {
 	}, nil
 }
 
-/*
-	OpenError represents errors related to the websocket opening handshake.
-*/
+// OpenError represents errors related to the websocket opening handshake.
 type OpenError struct {
 	Reason string
 }
 
-/*
-	Error implements the built in error interface.
-*/
+// Error implements the built in error interface.
 func (h *OpenError) Error() string {
 	return "Handshake Error: " + h.Reason
 }

@@ -11,9 +11,7 @@ import (
 	"sync"
 )
 
-/*
-	Dialer is a websocket client.
-*/
+// Dialer is a websocket client.
 type Dialer struct {
 	/*
 		Header to be included in the opening handshake request.
@@ -31,9 +29,7 @@ type Dialer struct {
 	TLSConfig *tls.Config
 }
 
-/*
-	Dial is the method used to start the websocket connection.
-*/
+// Dial is the method used to start the websocket connection.
 func (d *Dialer) Dial(u string) (*Socket, *http.Response, error) {
 	// Parse URL to return a valid URL instance.
 	l, err := parseURL(u)
@@ -104,11 +100,10 @@ func (d *Dialer) Dial(u string) (*Socket, *http.Response, error) {
 	}, r, nil
 }
 
-/*
-	createOpeningHandshakeRequest is used to return a valid websocket opening
-	handshake client request.
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
-*/
+// createOpeningHandshakeRequest is used to return a valid websocket opening
+// handshake client request.
+// 
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-4.1
 func (d *Dialer) createRequest(l *url.URL) *http.Request {
 	// Initialize header if not already initialized.
 	if d.Header == nil {

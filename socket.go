@@ -9,16 +9,12 @@ import (
 	"time"
 )
 
-/*
-	ErrSocketClosed is the error returned when a user tries to send a frame with
-	a closed socket.
-*/
+// ErrSocketClosed is the error returned when a user tries to send a frame with
+// a closed socket.
 var ErrSocketClosed = errors.New("socket has been closed")
 
-/*
-	WebSocket Error codes.
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-7.4.1
-*/
+// WebSocket Error codes.
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-7.4.1
 const (
 	CloseNormalClosure           int = 1000
 	CloseGoingAway               int = 1001
@@ -34,9 +30,7 @@ const (
 	CloseTLSHandshake            int = 1015
 )
 
-/*
-	Represents the state of the Socket instance
-*/
+// Represents the state of the Socket instance
 const (
 	/*
 		stateOpened will be the state when the socket instance is open.
@@ -55,9 +49,7 @@ const (
 	stateClosed int = 2
 )
 
-/*
-	Socket represents a socket endpoint.
-*/
+// Socket represents a socket endpoint.
 type Socket struct {
 	/*
 		conn is the underlying tcp connection.
@@ -98,19 +90,19 @@ type Socket struct {
 	CloseDelay time.Duration
 
 	/*
-		readHandler is invoked whenever a text or binary frame is recieved. The
+		readHandler is invoked whenever a text or binary frame is received. The
 		opcode and payload data are provided as args respectively.
 	*/
 	ReadHandler func(int, []byte)
 
 	/*
-		pingHandler is invoked whenever a ping frame is recieved. The payload
+		pingHandler is invoked whenever a ping frame is received. The payload
 		data is provided as arg.
 	*/
 	PingHandler func([]byte)
 
 	/*
-		pongHandler is invoked whenever a pong frame is recieved. The payload
+		pongHandler is invoked whenever a pong frame is received. The payload
 		data is provided as arg.
 	*/
 	PongHandler func([]byte)
@@ -135,10 +127,8 @@ type Socket struct {
 	writeMutex *sync.Mutex
 }
 
-/*
-	Listen is used to start listening for new frames sent by the connected
-	endpoint.
-*/
+// Listen is used to start listening for new frames sent by the connected
+// endpoint.
 func (s *Socket) Listen() {
 	s.read()
 }
@@ -259,11 +249,11 @@ Read:
 				s.state = stateClosing
 
 				// The acknowledgment close frame to be sent will echo the
-				// status code of the close frame just recieved.
+				// status code of the close frame just received.
 				// Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.1
 				var b []byte
 
-				// If the status code of the close frame recieved is valid, echo
+				// If the status code of the close frame received is valid, echo
 				// it. Else leave the payload data of the acknowledgement close
 				// frame empty.
 				if cerr == nil {
@@ -284,10 +274,8 @@ Read:
 	}
 }
 
-/*
-	Write is used to send new data frames to the connected endpoint. It accepts
-	two arguments 'o' opcode, 'p' payload data.
-*/
+// Write is used to send new data frames to the connected endpoint. It accepts
+// two arguments 'o' opcode, 'p' payload data.
 func (s *Socket) Write(o int, p []byte) error {
 	s.writeMutex.Lock()
 	defer s.writeMutex.Unlock()
@@ -343,36 +331,28 @@ func (s *Socket) Write(o int, p []byte) error {
 	return nil
 }
 
-/*
-	SetReadDeadline sets the deadline for future Read calls. A zero value for t
-	means Read will not time out.
-*/
+// SetReadDeadline sets the deadline for future Read calls. A zero value for t
+// means Read will not time out.
 func (s *Socket) SetReadDeadline(t time.Time) {
 	s.conn.SetReadDeadline(t)
 }
 
-/*
-	SetWriteDeadline sets the deadline for future Write calls. Even if write
-	times out, it may return n > 0, indicating that some of the data was
-	successfully written. A zero value for t means Write will not time out.
-*/
+// SetWriteDeadline sets the deadline for future Write calls. Even if write
+// times out, it may return n > 0, indicating that some of the data was
+// successfully written. A zero value for t means Write will not time out.
 func (s *Socket) SetWriteDeadline(t time.Time) {
 	s.conn.SetWriteDeadline(t)
 }
 
-/*
-	callReadHandler invokes the read handler provided by the user (if any).
-*/
+// callReadHandler invokes the read handler provided by the user (if any).
 func (s *Socket) callReadHandler(o int, p []byte) {
 	if s.ReadHandler != nil {
 		s.ReadHandler(o, p)
 	}
 }
 
-/*
-	callPingHandler first tries to invoke the ping handler provided by the
-	user. If the user hasn't provided one it invokes the default functionality.
-*/
+// callPingHandler first tries to invoke the ping handler provided by the
+// user. If the user hasn't provided one it invokes the default functionality.
 func (s *Socket) callPingHandler(p []byte) {
 	if s.PingHandler != nil {
 		s.PingHandler(p)
@@ -381,19 +361,15 @@ func (s *Socket) callPingHandler(p []byte) {
 	s.defaultPingHandler(p)
 }
 
-/*
-	defaultPingHandler sends a pong frame with the same payload data of the ping
-	frame just recieved.
-
-	Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.3
-*/
+// defaultPingHandler sends a pong frame with the same payload data of the ping
+// frame just received.
+//
+// Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.3
 func (s *Socket) defaultPingHandler(p []byte) {
 	s.Write(OpcodePong, p)
 }
 
-/*
-	callPongHandler invokes the pong handler provided by the user (if any).
-*/
+// callPongHandler invokes the pong handler provided by the user (if any).
 func (s *Socket) callPongHandler(p []byte) {
 	if s.PongHandler != nil {
 		s.PongHandler(p)
@@ -401,20 +377,16 @@ func (s *Socket) callPongHandler(p []byte) {
 	}
 }
 
-/*
-	callCloseHandler first tries to invoke the close handler provided by the
-	user.
-*/
+// callCloseHandler first tries to invoke the close handler provided by the
+// user.
 func (s *Socket) callCloseHandler(e error) {
 	if s.CloseHandler != nil {
 		s.CloseHandler(e)
 	}
 }
 
-/*
-	TCPClose closes the underlying tcp connection if it hasn't already been
-	closed.
-*/
+// TCPClose closes the underlying tcp connection if it hasn't already been
+// closed.
 func (s *Socket) TCPClose() {
 	// If socket has already been closed, don't reclose the tcp connection
 	if s.state == stateClosed {
@@ -431,11 +403,9 @@ func (s *Socket) TCPClose() {
 	s.callCloseHandler(s.closeError)
 }
 
-/*
-	tcpClose closes the underlying tcp connection after s.CloseDelay seconds if
-	it hasn't already been closed . More info on why this is needed documented
-	in s.CloseDelay.
-*/
+// tcpClose closes the underlying tcp connection after s.CloseDelay seconds if
+// it hasn't already been closed . More info on why this is needed documented
+// in s.CloseDelay.
 func (s *Socket) tcpClose() {
 	// If socket has already been closed, don't reclose the tcp connection
 	if s.state == stateClosed {
@@ -451,9 +421,7 @@ func (s *Socket) tcpClose() {
 	s.TCPClose()
 }
 
-/*
-	Close initiates the normal closures (1000) closing handshake.
-*/
+// Close initiates the normal closures (1000) closing handshake.
 func (s *Socket) Close() {
 	s.CloseWithError(&CloseError{
 		Code:   CloseNormalClosure,
@@ -461,9 +429,7 @@ func (s *Socket) Close() {
 	})
 }
 
-/*
-	CloseWithError initiates the closing handshake.
-*/
+// CloseWithError initiates the closing handshake.
 func (s *Socket) CloseWithError(e *CloseError) {
 	// Store error.
 	s.closeError = e
