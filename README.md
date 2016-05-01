@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/tabone/websocket)](https://goreportcard.com/report/github.com/tabone/websocket)
+[![GoDoc](https://godoc.org/github.com/tabone/websocket?status.svg)](https://godoc.org/github.com/tabone/websocket)
+
 # websocket
 Package websocket implements the websocket protocol defined in rfc6455
 
