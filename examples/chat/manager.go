@@ -43,7 +43,7 @@ func (m *manager) ping(s *websocket.Socket) {
 
 	for {
 		<-t.C
-		if err := s.Write(websocket.OpcodePing, nil); err != nil {
+		if err := s.WriteMessage(websocket.OpcodePing, nil); err != nil {
 			log.Println(err)
 			break
 		}
@@ -89,6 +89,6 @@ func (m *manager) config(i int) {
 */
 func (m *manager) broadcast(p []byte) {
 	for _, s := range m.users {
-		s.Write(websocket.OpcodeText, p)
+		s.WriteMessage(websocket.OpcodeText, p)
 	}
 }

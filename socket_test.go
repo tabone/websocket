@@ -766,7 +766,7 @@ func TestSocketWriteTimeoutErorr(t *testing.T) {
 
 		time.Sleep(time.Second * 2)
 
-		s.Write(OpcodeText, []byte("something"))
+		s.WriteMessage(OpcodeText, []byte("something"))
 	}
 
 	s := httptest.NewServer(http.HandlerFunc(h))
@@ -834,7 +834,7 @@ func TestSocketWriteFromClient(t *testing.T) {
 
 	defer c.TCPClose()
 
-	if err := c.Write(OpcodeText, []byte(payload)); err != nil {
+	if err := c.WriteMessage(OpcodeText, []byte(payload)); err != nil {
 		t.Fatal("unexpected error returned", err)
 	}
 
@@ -864,7 +864,7 @@ func TestSocketWriteFromServer(t *testing.T) {
 			t.Fatal("unexpected error was returned", err)
 		}
 
-		if err := s.Write(OpcodeText, []byte(payload)); err != nil {
+		if err := s.WriteMessage(OpcodeText, []byte(payload)); err != nil {
 			t.Fatal("unexpected error was returned", err)
 		}
 	}
@@ -913,7 +913,7 @@ func TestSocketWriteWhenClosed(t *testing.T) {
 	}
 	s.state = stateClosed
 
-	if err := s.Write(1, []byte("test")); err != ErrSocketClosed {
+	if err := s.WriteMessage(1, []byte("test")); err != ErrSocketClosed {
 		t.Errorf(`expected error "%s", but got "%v"`, ErrSocketClosed, err)
 	}
 }

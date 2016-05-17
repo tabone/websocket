@@ -261,7 +261,7 @@ Read:
 				}
 
 				// Send acknowledgement close frame.
-				s.Write(OpcodeClose, b)
+				s.WriteMessage(OpcodeClose, b)
 
 				// At this point the closing handshake would have been finalized
 				// therefore the tcp connection can be closed.
@@ -274,9 +274,9 @@ Read:
 	}
 }
 
-// Write is used to send new data frames to the connected endpoint. It accepts
+// WriteMessage is used to send frames to the connected endpoint. It accepts
 // two arguments 'o' opcode, 'p' payload data.
-func (s *Socket) Write(o int, p []byte) error {
+func (s *Socket) WriteMessage(o int, p []byte) error {
 	s.writeMutex.Lock()
 	defer s.writeMutex.Unlock()
 
@@ -366,7 +366,7 @@ func (s *Socket) callPingHandler(p []byte) {
 //
 // Ref Spec: https://tools.ietf.org/html/rfc6455#section-5.5.3
 func (s *Socket) defaultPingHandler(p []byte) {
-	s.Write(OpcodePong, p)
+	s.WriteMessage(OpcodePong, p)
 }
 
 // callPongHandler invokes the pong handler provided by the user (if any).
@@ -436,5 +436,5 @@ func (s *Socket) CloseWithError(e *CloseError) {
 
 	// Start the closing handshake
 	b, _ := e.ToBytes()
-	s.Write(OpcodeClose, b)
+	s.WriteMessage(OpcodeClose, b)
 }
